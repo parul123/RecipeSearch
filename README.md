@@ -13,6 +13,9 @@ An Android app which allows you to search meals and get Recipe details. Built us
 * Baseline and Startup Profiles - for performance improvements during app launch
 * JUnit and MockK - for unit tests
 
+  ### API Used
+ "https://www.themealdb.com/
+
 ### Diagram
 <img width="830" alt="image" src="https://github.com/user-attachments/assets/3d60344c-5cf5-48f0-8a4a-4c05f2252952">
 
