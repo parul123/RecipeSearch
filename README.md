@@ -20,10 +20,12 @@ An Android app which allows you to search meals and get Recipe details. Built us
 <img width="830" alt="image" src="https://github.com/user-attachments/assets/3d60344c-5cf5-48f0-8a4a-4c05f2252952">
 
 ### Screen Search
-![recipe_search](https://github.com/user-attachments/assets/ac9973dc-b428-4b1e-8855-8f2df540ef53)
+![main_screen](https://github.com/user-attachments/assets/5749363a-6fbf-4d6d-9fac-61f029013709)
+
 
 ### Screen Detail
-![recipe_detail](https://github.com/user-attachments/assets/baca6b12-f40d-4f0a-a712-92bf9934050d)
+![detail_screen](https://github.com/user-attachments/assets/de9ec8f1-bb21-49a9-8333-9ae98b214ee7)
+
 
 
 
