@@ -5,9 +5,7 @@ import com.coding.exercise.receipesearch.domain.model.Recipe
 import com.coding.exercise.receipesearch.domain.model.RecipeDetail
 
 object RecipeMapper {
-    /*
-    This is a Function to map Data layer object to Search screen Object
-     */
+
     fun toDomainMeal(recipeDto: RecipeDto): Recipe {
         return Recipe(
             id = recipeDto.idMeal,
@@ -15,9 +13,7 @@ object RecipeMapper {
             image = recipeDto.strMealThumb ?: ""
         )
     }
-    /*
-        This is a Function to map Data layer object to Detail screen Object
-         */
+
     fun toDomainRecipeDetail(recipeDto: RecipeDto): RecipeDetail {
         return RecipeDetail(
             id = recipeDto.idMeal,

@@ -1,6 +1,5 @@
 package com.coding.exercise.receipesearch.presentation.ui.state
 
-import com.coding.exercise.receipesearch.domain.model.Recipe
 import com.coding.exercise.receipesearch.domain.model.RecipeDetail
 
 sealed class RecipeDetailState {

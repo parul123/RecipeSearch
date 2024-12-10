@@ -13,6 +13,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.compose.rememberNavController
+import com.coding.exercise.receipesearch.presentation.ui.base.component.TopBar
 import com.coding.exercise.receipesearch.presentation.ui.navigation.NavigationGraph
 import com.coding.exercise.receipesearch.presentation.ui.theme.ReceipeSearchTheme
 import dagger.hilt.android.AndroidEntryPoint
@@ -24,16 +26,8 @@ class RecipeSearchActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
-
             ReceipeSearchTheme {
-                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-                    Surface(
-                        modifier = Modifier.fillMaxSize().padding(innerPadding),
-                        color = MaterialTheme.colorScheme.background
-                    ) {
-                        NavigationGraph.SetupNavHost()
-                    }
-                }
+                NavigationGraph.SetupNavHost()
             }
         }
     }

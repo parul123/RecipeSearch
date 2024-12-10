@@ -59,7 +59,6 @@ dependencies {
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
-    implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     //Hilt
     implementation(libs.google.dagger.hilt)
@@ -67,6 +66,7 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
+
     kapt(libs.google.dagger.hilt.compiler)
     // Retrofit
     implementation (libs.retrofit2.retrofit)
@@ -74,19 +74,13 @@ dependencies {
     //coil for image Loading
     implementation(libs.coil.compose)
 
+    testImplementation(libs.testng)
+    testImplementation (libs.jetbrains.kotlin.test.junit5)
     testImplementation(libs.junit)
-    testImplementation ("org.mockito.kotlin:mockito-kotlin:4.1.0")
-    testImplementation ("org.mockito:mockito-core:4.6.1")
-    // Coroutine test library for testing coroutines
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.0")
-
-    // To use assertEquals and other assertions in unit tests
-    testImplementation ("org.junit.jupiter:junit-jupiter-api:5.7.1")
-    testImplementation ("org.junit.jupiter:junit-jupiter-engine:5.7.1")
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
+    testImplementation (libs.mockito.core)
+    testImplementation (libs.kotlinx.coroutines.test)
+    testImplementation (libs.junit.jupiter.api)
+    testImplementation (libs.junit.jupiter.engine)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 }

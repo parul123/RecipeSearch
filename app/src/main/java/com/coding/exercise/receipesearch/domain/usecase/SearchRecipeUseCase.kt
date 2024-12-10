@@ -1,7 +1,6 @@
 package com.coding.exercise.receipesearch.domain.usecase
 
 import com.coding.exercise.receipesearch.common.UiState
-import com.coding.exercise.receipesearch.common.Utils
 import com.coding.exercise.receipesearch.domain.mapper.RecipeMapper
 import com.coding.exercise.receipesearch.domain.model.Recipe
 import com.coding.exercise.receipesearch.domain.repository.RecipeRepository
@@ -20,7 +19,7 @@ class SearchRecipeUseCase @Inject constructor(private val repository: RecipeRepo
         try {
             emit(UiState.Loading())
             val data = withContext(Dispatchers.IO) {
-                repository.searchRecipes(q)  // IO operation
+                repository.searchRecipes(q)
             }
             val domainData =
                 if (data.meals != null) data.meals!!.map { it -> RecipeMapper.toDomainMeal(it) } else emptyList()

@@ -24,6 +24,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -47,8 +49,8 @@ import com.coding.exercise.receipesearch.presentation.ui.state.RecipeViewState
 import com.coding.exercise.receipesearch.presentation.ui.viewmodels.RecipeSearchViewModel
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.coding.exercise.receipesearch.R
-import com.coding.exercise.receipesearch.common.Utils
 import com.coding.exercise.receipesearch.presentation.ui.base.component.NoNetworkErrorComponent
+import com.coding.exercise.receipesearch.presentation.ui.base.component.TopBar
 
 @Composable
 fun RecipeSearchScreen(
@@ -58,48 +60,21 @@ fun RecipeSearchScreen(
     var query by remember { mutableStateOf("") }
     val context = LocalContext.current
     val keyboardController = LocalSoftwareKeyboardController.current
-    Column(
-
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(8.dp),
-        verticalArrangement = Arrangement.Top,
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+    Scaffold( topBar = {
+        TopBar(navController, LocalContext.current.getString(R.string.search_screen_header_title),  false)
+    },modifier = Modifier.fillMaxSize()) { innerPadding ->
+        Surface(
+            modifier = Modifier.fillMaxSize().padding(innerPadding),
+            color = MaterialTheme.colorScheme.background
         ) {
-            OutlinedTextField(
-                modifier = Modifier.weight(1f),
-                value = query,
-                onValueChange = {
-                    query = it
-                },
-                label = {
-                    Text(text = context.getString(R.string.search_for_a_recipe))
-                }
-            )
-            IconButton(onClick = {
-                recipeViewModel.processIntent(RecipeSearchIntent.SearchRecipes(query))
-                keyboardController?.hide()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Search,
-                    contentDescription = context.getString(R.string.search_for_a_recipe)
-                )
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        val state by recipeViewModel.state
+            Column(
 
-        when (state) {
-            is RecipeViewState.Init -> {
-            }
-            is RecipeViewState.Loading -> {
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -107,38 +82,79 @@ fun RecipeSearchScreen(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    CircularProgressIndicator()
+                    OutlinedTextField(
+                        modifier = Modifier.weight(1f),
+                        value = query,
+                        onValueChange = {
+                            query = it
+                        },
+                        label = {
+                            Text(text = context.getString(R.string.search_for_a_recipe))
+                        }
+                    )
+                    IconButton(onClick = {
+                        if (query.isEmpty()) {
+                            Toast.makeText(context, context.getString(R.string.empty_query_string_error), Toast.LENGTH_SHORT).show()
+                        } else {
+                            recipeViewModel.processIntent(RecipeSearchIntent.SearchRecipes(query))
+                        }
+
+                        keyboardController?.hide()
+                    }) {
+                        Icon(
+                            imageVector = Icons.Default.Search,
+                            contentDescription = context.getString(R.string.search_for_a_recipe)
+                        )
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
+                val state by recipeViewModel.state
 
-            }
+                when (state) {
+                    is RecipeViewState.Init -> {
+                    }
+                    is RecipeViewState.Loading -> {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceEvenly
+                        ) {
+                            CircularProgressIndicator()
+                        }
 
-            is RecipeViewState.Success -> {
-                val recipes = (state as RecipeViewState.Success).recipes
-                if (recipes.isEmpty()) {
-                    Text(text = context.getString(R.string.no_result_found))
-                } else {
-                    MealGrid(recipes, navController)
+                    }
+
+                    is RecipeViewState.Success -> {
+                        val recipes = (state as RecipeViewState.Success).recipes
+                        if (recipes.isEmpty()) {
+                            Text(text = context.getString(R.string.no_result_found))
+                        } else {
+                            MealGrid(recipes, navController)
+                        }
+                    }
+                    is RecipeViewState.Error -> {
+                        val message = (state as RecipeViewState.Error).message
+                        Toast.makeText(context , message, Toast.LENGTH_SHORT).show()
+                    }
+                    is RecipeViewState.NetworkError -> {
+                        NoNetworkErrorComponent(context = context)
+                    }
+
                 }
-            }
-            is RecipeViewState.Error -> {
-                val message = (state as RecipeViewState.Error).message
-                Toast.makeText(context , message, Toast.LENGTH_SHORT).show()
-            }
-            is RecipeViewState.NetworkError -> {
-                NoNetworkErrorComponent(context = context)
-            }
-
         }
+    }
+
     }
 
 }
 
 @Composable
 fun MealGrid(meals: List<Recipe>, navController:NavController) {
-    // LazyVerticalGrid for displaying meals in grid format
     LazyVerticalGrid(
-        columns = GridCells.Fixed(2), // You can set a fixed number of columns
-        contentPadding = PaddingValues(8.dp), // Add padding around grid
+        columns = GridCells.Fixed(2),
+        contentPadding = PaddingValues(8.dp),
         modifier = Modifier.fillMaxSize()
     ) {
         items(meals, key = { it.id }) { meal ->
@@ -159,20 +175,18 @@ fun MealCard(meal: Recipe, navController:NavController) {
         shape = MaterialTheme.shapes.medium
     ) {
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Image of the meal
             AsyncImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(meal.image)  // URL of the image
-                    .crossfade(true)       // Add a smooth transition when loading the image
+                    .data(meal.image)
+                    .crossfade(true)
                     .build(),
                 contentDescription = meal.name,
                 modifier = Modifier
                     .size(150.dp)
-                    .clip(CircleShape), // Optional: Makes image circular
-                contentScale = ContentScale.Crop // Crop to fit the size of the view
+                    .clip(CircleShape),
+                contentScale = ContentScale.Crop
             )
             Spacer(modifier = Modifier.height(8.dp))
-            // Name of the meal
             Text(
                 text = meal.name,
                 style = MaterialTheme.typography.bodyMedium,

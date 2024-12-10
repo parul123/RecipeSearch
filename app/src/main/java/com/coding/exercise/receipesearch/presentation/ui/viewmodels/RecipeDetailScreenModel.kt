@@ -8,11 +8,7 @@ import com.coding.exercise.receipesearch.common.UiState
 import com.coding.exercise.receipesearch.domain.usecase.GetRecipeDetailUseCase
 import com.coding.exercise.receipesearch.presentation.ui.state.RecipeDetailIntent
 import com.coding.exercise.receipesearch.presentation.ui.state.RecipeDetailState
-import com.coding.exercise.receipesearch.presentation.ui.state.RecipeSearchIntent
-import com.coding.exercise.receipesearch.presentation.ui.state.RecipeViewState
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 @HiltViewModel
